@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended:false}));
 //separamos las router aparte.
 app.use('/auth', require('./routes/routerAuth'));
 app.use('/', require('./routes/routerCharacters'));
-app.use('/', require('./routes/postRouter'));
+app.use('/', require('./routes/routerGender'));
 //--------
 app.use(function(req, res, next) {
     if (!req.user)
