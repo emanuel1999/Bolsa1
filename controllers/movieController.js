@@ -3,17 +3,13 @@ const Movie=require('../database/model/Movie');
 const associations=require('../database/associations');
 const Gender = require('../database/model/Gender');
 
-exports.createGender = (req, res) => {
-  const { name, image } = req.body;
-  Gender.create({
-    name,
-    image,
-  }).then((gender) => {
-    res.json({gender: gender})
-      .catch((error) => {
-        res.status(500).json({
-          msg: "something wrong" + error,
-        });
-      });
-  });
-};
+exports.getMovie=async (req,res)=>{
+    await Movie.findAll({
+     attributes: ['image', 'title','createdAt']
+    }).then(Movie =>{
+     res.status(200).json(Movie);
+    }).catch(err => {
+    res.status(400).json("error for Get Movie")
+  })
+}
+

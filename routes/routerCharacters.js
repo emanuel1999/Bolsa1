@@ -15,6 +15,6 @@ router.post('/createCharacter',authController.isAuthenticated,characterControlle
 router.put('/editCharacter/:id',authController.isAuthenticated,characterController.editCharacter);
 //Delate
 router.delete('/delateCharacter/:id',authController.isAuthenticated,characterController.deleteCharacter);
-
-
+//Find Character
+router.get('/character',authController.isAuthenticated,characterController.findCharacter);
 module.exports=router;

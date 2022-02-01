@@ -67,20 +67,28 @@ exports.deleteCharacter=async(req,res)=>{
   })
 }
 
-/*
-await Character.update({
-  image:req.body.image,
-  name:req.body.name,
-  age:req.body.age,
-  weight:req.body.weight,
-  history:req.body.history,
-  
-}, {
-  where:{
-    id:req.params.id
- }
-}).then(Character=>{
-res.status(201).json('Update');
-}).catch(err => {
-res.status(404).json('Not Update because: ' + err)
-})*/
+exports.findCharacter=async(req,res)=>{
+  if(req.query.age){
+  await Character.findAll({
+    where:{
+        age:req.query.age
+    }
+  }).then((Character) => res.json(Character));
+} else if (req.query.name){
+  await Character.findAll({
+    where:{
+       name:req.query.name
+    }
+  }).then((Character) => res.json(Character));
+}else if (req.query.movies){
+  await Character.findAll({
+    where:{
+      id:req.query.movies},
+      attributes: { exclude: "GenderId" },
+  }).then((Character) => res.json(Character));
+
+}else {
+  res.status(404).json("Error in parameter query")
+}
+
+}
