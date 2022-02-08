@@ -1,4 +1,6 @@
+const { Literal } = require('sequelize/dist/lib/utils');
 const Character=require('../database/model/Character');
+const { options } = require('../database/model/Movie');
 const Movie=require('../database/model/Movie');
 
 
@@ -13,6 +15,24 @@ exports.getCharacter= async (req,res)=>{
       }
     )
   }
+
+exports.detailCharcater=async(req,res)=>{
+  const id=req.params.id;
+  Character.findByPk(id,{
+    include:[{
+      model:Movie,
+      attributes:['id','title','qualification'],
+      through:{ attributes:[] } 
+  
+    }]
+  }).then(Character=>{
+    res.json(Character);
+  }).catch(err=>{
+    res.json(err)
+  })
+
+}
+
 
 
 exports.createCharacter=async (req,res)=>{
@@ -82,9 +102,15 @@ exports.findCharacter=async(req,res)=>{
   }).then((Character) => res.json(Character));
 }else if (req.query.movies){
   await Character.findAll({
-    where:{
-      id:req.query.movies},
-      attributes: { exclude: "GenderId" },
+    include:[{
+      model:Movie,
+    where:
+      {id:req.query.movies,},
+      attributes:[('title')],
+      through:{ attributes:[] } 
+  
+    }]
+    
   }).then((Character) => res.json(Character));
 
 }else {

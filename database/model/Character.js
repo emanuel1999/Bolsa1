@@ -1,6 +1,6 @@
 const {Model, DataTypes}=require('sequelize');
 const sequelize=require('../db');
-
+const Movies = require('./Movie');
 class Character extends Model{};
 Character.init({
     image:DataTypes.STRING,
@@ -60,4 +60,5 @@ Character.init({
     sequelize,
     modelName:"character"
 })
+
 module.exports=Character;

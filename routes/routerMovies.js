@@ -4,18 +4,22 @@ const Movie = require('../database/model/Movie');
 const Gender = require('../database/model/Gender');
 const Character=require('../database/model/Character');
 const associations= require('../database/associations');
-const MovieController=require('../controllers/movieController')
+const movieController=require('../controllers/movieController')
 const authController=require('../controllers/authController')
 const router = express.Router();
 
 
 //show image and name
-router.get('/movies',authController.isAuthenticated,MovieController.getMovie);
+router.get('/movie',authController.isAuthenticated,movieController.findMovie);
 //Created
-router.post('/createMovie',authController.isAuthenticated,MovieController.createMovie);
+//router.post('/createMovie',authController.isAuthenticated,movieController.createMovie);
 //Edit
-router.put('/editMovie/:id',authController.isAuthenticated,MovieController.editMovie);
+router.put('/editMovie/:id',movieController.editMovie);
 //Delate
-router.delete('/delateMovie/:id',authController.isAuthenticated,MovieController.deleteMovie);
+router.delete('/deleteMovie/:id',authController.isAuthenticated,movieController.deleteMovie);
+//Detail
+router.get('/movie/:id',authController.isAuthenticated,movieController.detailMovie);
+//Find Movie
+
 
 module.exports=router;

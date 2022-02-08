@@ -17,4 +17,7 @@ router.put('/editCharacter/:id',authController.isAuthenticated,characterControll
 router.delete('/delateCharacter/:id',authController.isAuthenticated,characterController.deleteCharacter);
 //Find Character
 router.get('/character',authController.isAuthenticated,characterController.findCharacter);
+//Detail Character
+router.get('/character/:id',authController.isAuthenticated,characterController.detailCharcater);
+
 module.exports=router;

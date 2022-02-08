@@ -1,5 +1,6 @@
 const {Model, DataTypes}=require('sequelize');
 const sequelize=require('../db');
+const Character = require('./Character');
 
 class Movies extends Model{};
 Movies.init({
@@ -39,6 +40,19 @@ Movies.init({
         },
             
     },
+    gender_id:{
+
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        validate:{
+            notNull:{
+                msg:"gender_id cannot be null"
+            },
+            isNumeric:{
+                args:true
+            }
+        }
+    },
     createdAt: {
         type: 'TIMESTAMP',
         allowNull: false
@@ -51,4 +65,7 @@ Movies.init({
     sequelize,
     modelName:"movies"
 })
+
+
+
 module.exports=Movies;

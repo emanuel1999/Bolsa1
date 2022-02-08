@@ -1,51 +1,81 @@
 const sequelize = require('./database/db');
 const Character = require('./database/model/Character');
 const Gender =require('./database/model/Gender');
+const { create } = require('./database/model/Movie');
 const Movie = require('./database/model/Movie');
-//require('./database/asociations');
+require('./database/associations');
 
-
-// Character
-const character = [
-    { image: "holapeli", age: 1,name:"aino",weight:12,history:"en un mundo de dolor", },
-    { image: "holapeli", age: 2,name:"lcuai",weight:2,history:"roto", },
-    { image: "holapeli", age: 3,name:"fernando",weight:40,history:"marvel company", },
-    { image: "holapeli", age: 4,name:"emanuel",weight:35,history:"docientos pesos perdidos", },
-
-];
 
 // Gender
 const gender = [
-    { image: "Foo", name: "Acción"},
-    { image: "Foo", name: "Ciencia Ficción"},
-    { image: "Foo", name: "Comedia"},
-    { image: "Foo", name: "No- Ficción"},
-    { image: "Foo", name: "Drama"},
-    { image: "Foo", name: "Fantasía"},
-    { image: "Foo", name: "Musical"},
-    { image: "Foo", name: "Suspense"},
-    { image: "Foo", name: "Terror"}
-];
+    { name: "adventure", image: "adventure.jpg" },
+    { name: "comedy", image: "comedy.jpg" },
+    { name: "horror", image: "horro.jpg" },
+    { name: "drama", image: "drama.jpg" },
+    { name: "mistery", image: "mistery.jpg" },
+    { name: "fantasy", image: "fantasy.jpg" },
+    { name: "sciencie fiction", image: "sciencief.jpg" },
+    { name: "thriller", image: "thriller.jpg" }
+]  
 //Movie
-const movie = [
-    { image: "Foo", title: "Señor de los anillos",qualification:2},
-    { image: "Foo", title: "Pedro capone",qualification:4},
-    { image: "Foo", title: "Iron Man",qualification:3,},
-    { image: "Foo", title: "Perro 24",qualification:2},
-    { image: "Foo", title: "metralleta",qualification:1},
 
-];
 
 sequelize.sync({ force: false }).then(() => {
     // Conexión establecida
     console.log("Conexión establecida...");
 }).then(() => {
-    // Rellenar direcciones
-    character.forEach(character => Character.create(character));
-}).then(() => {
-    // Rellenar posts
-    movie.forEach(movie => Movie.create(movie));
+    //gender.forEach(gender => Gender.create(gender));
     
-}).then(()=>{
-    gender.forEach(gender => Gender.create(gender));
-})
+}).then( async () => {
+  let movie1 = await Movie.create(
+    {
+      title: "Encanto",
+      date: "2021-11-24",
+      qualification: 3,
+      image: "encanto.jpg",
+      gender_id: 1,
+      characters:[
+        {image:"pedro.png",name:"pedrito",weight:121,age:21,history: "en un mundo de fantasias"},
+        {image:"ema.png",name:"jorge",weight:122,age:22,history: "en un mundo de kaka"},
+      ]
+    },{ include:"characters"}
+    
+  );
+  let char1= await Character.create({
+    image:"pedro.png",name:"pedrito",weight:121,age:21,history: "en un mundo de fantasias"
+  })
+  let char2= await Character.create({
+    image:"pedro.png",name:"juanse",weight:121,age:21,history: "en un mundo de laostea"
+  })
+  let movie2= await Movie.create(
+    {title: "Encanto",
+      date: "2021-11-24",
+      qualification: 3,
+      image: "encanto.jpg",
+      gender_id: 4}
+  )
+  movie2.addCharacters([char1,char2])
+  /*const char1= await Character.create(
+    {
+      image:"encanto.png",
+      name:"ema",
+      age:21,
+      weight:121,
+      history:"en un lugar feliz",
+      movies:[
+        {
+          title: "Encanto",
+          date: "2021-11-24",
+          qualification: 3,
+          image: "encanto.jpg",
+          gender_id: "1",
+        }
+      ]
+    },{
+      include:"movies"
+    }
+  )*/
+
+    }).catch(err=>{
+      console.log(err);
+    })

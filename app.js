@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended:false}));
 app.use('/auth', require('./routes/routerAuth'));
 app.use('/', require('./routes/routerCharacters'));
 app.use('/', require('./routes/routerGender'));
+app.use('/', require('./routes/routerMovies'));
 //--------
 app.use(function(req, res, next) {
     if (!req.user)
