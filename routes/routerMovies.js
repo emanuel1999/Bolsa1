@@ -12,9 +12,9 @@ const router = express.Router();
 //show image and name
 router.get('/movie',authController.isAuthenticated,movieController.findMovie);
 //Created
-//router.post('/createMovie',authController.isAuthenticated,movieController.createMovie);
+router.post('/createMovie',authController.isAuthenticated,movieController.upload,movieController.createMovie);
 //Edit
-router.put('/editMovie/:id',movieController.editMovie);
+router.put('/editMovie/:id',authController.isAuthenticated,movieController.editMovie);
 //Delate
 router.delete('/deleteMovie/:id',authController.isAuthenticated,movieController.deleteMovie);
 //Detail

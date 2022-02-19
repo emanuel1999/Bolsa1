@@ -1,7 +1,24 @@
 const { Literal } = require('sequelize/dist/lib/utils');
 const Character=require('../database/model/Character');
-const { options } = require('../database/model/Movie');
 const Movie=require('../database/model/Movie');
+const cors= require('cors');
+const multer=require ('multer');
+const fs=require('fs')
+
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'images/character')
+  },
+  filename: function (req, file, cb) {
+      const name=file.originalname;
+      cb(null,`${name.toLowerCase()}`)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+exports.upload =upload.single('image')
 
 
 exports.getCharacter= async (req,res)=>{
@@ -36,16 +53,22 @@ exports.detailCharcater=async(req,res)=>{
 
 
 exports.createCharacter=async (req,res)=>{
-  const { name, age, weight, history, image } = req.body;
-
+  const { name, age, weight, history} = req.body;
+  const image=req.file.originalname.toLowerCase();
   await Character.create({
     name:name,
     age:age,
     weight:weight,
     history:history,
     image:image,
-  }).then(Character =>{
-    res.status(200).json(Character);
+  }).then(nCharacter =>{
+    if(req.body.id){
+      nCharacter.addMovie(req.body.id)
+      res.status(200).json("Movie Created with association"+Character)
+    }else{
+      res.status(200).json("Movie Created without association"+Character)
+    }
+    
 }).catch(err => {
   res.status(400).json("error of  create Character for: "+ err)
     
@@ -72,16 +95,27 @@ exports.editCharacter=async (req,res)=>{
     
 }
 exports.deleteCharacter=async(req,res)=>{
-  await Character.destroy({
+  
+  await Character.findAll({
+    attributes: ['image'],
     where:{
       id:req.params.id
     }
   }).then(result=>{
-    if (result==1){
+    //res.json(result[0].image)
+    const imageName=result[0].image
+    fs.unlinkSync('./images/character/'+imageName)
+    
+  }).then(()=>{
+    Character.destroy({
+    where:{
+      id:req.params.id
+    }
+    })
+  }).then(result=>{
+    
       res.status(204).json("Correct Delete user:" +result)
-  } else{
-      throw new err();
-  }
+    
   }).catch(err => {
     res.status(404).json('Not Delate because: ' + err)
   })

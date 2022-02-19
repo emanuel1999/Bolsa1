@@ -10,9 +10,9 @@ const router = express.Router();
 //show image and name
 router.get('/characters',authController.isAuthenticated,characterController.getCharacter);
 //Created
-router.post('/createCharacter',authController.isAuthenticated,characterController.createCharacter);
+router.post('/createCharacter',authController.isAuthenticated,characterController.upload,characterController.createCharacter);
 //Edit
-router.put('/editCharacter/:id',authController.isAuthenticated,characterController.editCharacter);
+router.put('/editCharacter/:id',authController.isAuthenticated,authController.isAuthenticated,characterController.editCharacter);
 //Delate
 router.delete('/delateCharacter/:id',authController.isAuthenticated,characterController.deleteCharacter);
 //Find Character
