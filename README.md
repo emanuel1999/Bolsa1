@@ -1,4 +1,4 @@
-alkemy
+
 Para utilizar esta api tienen que crear un archivo .env dentro de la carpeta env
 con los siguientes parametros.
 
